@@ -34,7 +34,7 @@ void Game::Init(HWND hwnd)
 void Game::Update()
 {
 	//Scale Rotation Translation SRT
-	//_transformData.offset.x += -0.0003f;
+	_transformData.offset.x += -0.0003f;
 	_transformData.offset.y += 0.0003f;
 
 	D3D11_MAPPED_SUBRESOURCE subResource;
