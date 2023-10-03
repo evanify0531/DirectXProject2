@@ -18,14 +18,22 @@ SamplerState sampler0 : register(s0);
 
 cbuffer TransformData : register(b0)
 {
-    float4 offset;
+    row_major matrix matWorld;
+    row_major matrix matView;
+    row_major matrix matProjection;
 }
     
 //Input Assembler->Vertex Shader -> Rasterizer -> Pixel Shader -> Output Merger
 VS_OUTPUT VS(VS_INPUT input)
 {
     VS_OUTPUT output;
-    output.position = input.position + offset;
+    
+    //wvp
+    float4 position = mul(input.position, matWorld);
+    position = mul(position, matView);
+    position = mul(position, matProjection);
+    
+    output.position = position;
     //output.color = input.color;
     output.uv = input.uv;
     return output;

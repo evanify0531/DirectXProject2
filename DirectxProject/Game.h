@@ -10,14 +10,6 @@ public:
 	void Render();
 
 private:
-	void RenderBegin();
-	void RenderEnd();
-
-private:
-	void CreateDeviceAndSwapChain();
-	void CreateRenderTargetView();
-	void SetViewport();
-
 	void CreateGeometry();
 
 	void CreateConstantBuffer();
@@ -40,21 +32,13 @@ private:
 
 private:
 	HWND _hwnd = NULL;
-	uint32 _width = 0;
-	uint32 _height = 0;
+	//uint32 _width = 0;
+	//uint32 _height = 0;
 
 private:
-	//Device and SwapChain
-	ComPtr<ID3D11Device>  _device = nullptr;
-	ComPtr<ID3D11DeviceContext> _deviceContext = nullptr;
-	ComPtr<IDXGISwapChain> _swapChain = nullptr;
-
-	// Render Target View
-	ComPtr<ID3D11RenderTargetView> _renderTargetView = nullptr;
-
-	// Misc
-	D3D11_VIEWPORT _viewport = { 0 };
-	float _clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.f };
+	//Graphics
+	Graphics* _graphics = nullptr;
+	//shared_ptr<Graphics> _graphics;
 
 	//Geometry
 	vector<Vertex> _vertices;
@@ -78,6 +62,10 @@ private:
 	//Constant Buffer
 	TransformData _transformData;
 	ComPtr<ID3D11Buffer> _constantBuffer;
+	
+	Vec3 _localScale = { 1.f, 1.f, 1.f };
+	Vec3 _localPosition = { 0.f, 0.f, 0.f };
+	Vec3 _localRotation = { 0.f, 0.f, 0.f };
 
 	//RasterizerState
 	ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
