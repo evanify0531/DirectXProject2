@@ -16,11 +16,12 @@ void Game::Init(HWND hwnd)
 	//_height = GWinSizeY;
 
 	//Graphics
-	_graphics = new Graphics(hwnd);
-	//make_shared <Graphics>(hwnd);
-	_vertexBuffer = new VertexBuffer(_graphics->GetDevice());
-	_indexBuffer = new IndexBuffer(_graphics->GetDevice());
-	_inputLayout = new InputLayout(_graphics->GetDevice());
+	//_graphics = new Graphics(hwnd);
+	_graphics = make_shared <Graphics>(hwnd);
+	_vertexBuffer = make_shared<VertexBuffer>(_graphics->GetDevice());
+	_indexBuffer = make_shared<IndexBuffer>(_graphics->GetDevice());
+	_inputLayout = make_shared<InputLayout>(_graphics->GetDevice());
+	_geometry = make_shared<Geometry<VertexTextureData>>();
 
 
 	//TODO
@@ -69,7 +70,7 @@ void Game::Render()
 	//TODO
 	{
 		//IA
-		uint32 stride = sizeof(Vertex);
+		uint32 stride = sizeof(VertexTextureData); //will fix later
 		uint32 offset = 0;
 
 		auto _deviceContext = _graphics->GetDeviceContext();
@@ -96,7 +97,7 @@ void Game::Render()
 		_deviceContext->OMSetBlendState(_blendState.Get(), nullptr, 0xFFFFFFFF);
 		
 		//_deviceContext->Draw(_vertices.size(), 0);
-		_deviceContext->DrawIndexed(_indices.size(), 0, 0);
+		_deviceContext->DrawIndexed(_geometry->GetIndexCount(), 0, 0);
 	}
 
 	_graphics->RenderEnd();
@@ -106,36 +107,17 @@ void Game::Render()
 void Game::CreateGeometry()
 {
 	//Vertex Data
-	_vertices.resize(4);
-	_vertices[0].position = Vec3(-0.5f, -0.5f, 0.f);
-	_vertices[0].uv = Vec2(0.f, 1.f);
-	//_vertices[0].color = Color(1.f, 0.f, 0.f, 1.f);
-	_vertices[1].position = Vec3(-0.5f, 0.5f, 0.f);
-	_vertices[1].uv = Vec2(0.f, 0.f);
-	//_vertices[1].color = Color(0.f, 1.f, 0.f, 1.f);
-	_vertices[2].position = Vec3(0.5f, -0.5f, 0.f);
-	_vertices[2].uv = Vec2(1.f, 1.f);
-	//_vertices[2].color = Color(0.f, 0.f, 1.f, 1.f);
-	_vertices[3].position = Vec3(0.5f, 0.5f, 0.f);
-	_vertices[3].uv = Vec2(1.f, 0.f);
-	//_vertices[3].color = Color(1.f, 0.f, 1.f, 1.f);
+	GeometryHelper::CreateRectangle(_geometry);
+
 
 	//vertex Buffer
-	{
-		_vertexBuffer->Create(_vertices);
-	}
-
-	//Indices
-	{
-		_indices = { 0, 1, 2, 2, 1, 3 };
-
-	}
+	
+	_vertexBuffer->Create(_geometry->GetVertices());
+	
 
 	//Index Buffer
-	{
-		_indexBuffer->Create(_indices);
-	}
-
+	_indexBuffer->Create(_geometry->GetIndices());
+	
 }
 
 void Game::CreateConstantBuffer()

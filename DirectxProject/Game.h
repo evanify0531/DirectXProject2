@@ -37,18 +37,19 @@ private:
 
 private:
 	//Graphics
-	Graphics* _graphics = nullptr;
-	//shared_ptr<Graphics> _graphics;
-	VertexBuffer* _vertexBuffer = nullptr;
-
+	shared_ptr<Graphics> _graphics;
+	shared_ptr<VertexBuffer> _vertexBuffer;
 	//Geometry
-	vector<Vertex> _vertices;
-	vector<uint32> _indices;
+	//vector<Vertex> _vertices;
+	//vector<uint32> _indices;
+	shared_ptr<Geometry<VertexTextureData>> _geometry;
+
+	
 	//ComPtr<ID3D11Buffer> _vertexBuffer = nullptr;
 	//ComPtr<ID3D11Buffer> _indexBuffer = nullptr;
-	IndexBuffer* _indexBuffer = nullptr;
+	shared_ptr<IndexBuffer> _indexBuffer;
 	//ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
-	InputLayout* _inputLayout = nullptr;
+	shared_ptr<InputLayout> _inputLayout;
 
 	//Vertex Shader
 	ComPtr<ID3D11VertexShader> _vertexShader = nullptr;
