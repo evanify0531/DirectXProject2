@@ -18,6 +18,9 @@ void Game::Init(HWND hwnd)
 	//Graphics
 	_graphics = new Graphics(hwnd);
 	//make_shared <Graphics>(hwnd);
+	_vertexBuffer = new VertexBuffer(_graphics->GetDevice());
+	_indexBuffer = new IndexBuffer(_graphics->GetDevice());
+	_inputLayout = new InputLayout(_graphics->GetDevice());
 
 
 	//TODO
@@ -36,6 +39,7 @@ void Game::Init(HWND hwnd)
 void Game::Update()
 {
 	//Scale Rotation Translation SRT
+	_localPosition.x += 0.001f;
 	//_transformData.offset.x += -0.0003f;
 	//_transformData.offset.y += 0.0003f;
 	//SRT
@@ -70,9 +74,9 @@ void Game::Render()
 
 		auto _deviceContext = _graphics->GetDeviceContext();
 
-		_deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer.GetAddressOf(), &stride, &offset);
-		_deviceContext->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		_deviceContext->IASetInputLayout(_inputLayout.Get());
+		_deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer->GetComPtr().GetAddressOf(), &stride, &offset);
+		_deviceContext->IASetIndexBuffer(_indexBuffer->GetComPtr().Get(), DXGI_FORMAT_R32_UINT, 0);
+		_deviceContext->IASetInputLayout(_inputLayout->GetComPtr().Get());
 		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//VS
@@ -118,19 +122,7 @@ void Game::CreateGeometry()
 
 	//vertex Buffer
 	{
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
-		desc.Usage = D3D11_USAGE_IMMUTABLE;
-		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		desc.ByteWidth = (uint32)(sizeof(Vertex) * _vertices.size());
-		
-		D3D11_SUBRESOURCE_DATA data;
-		ZeroMemory(&data, sizeof(data));
-		data.pSysMem = _vertices.data(); //address of first element
-		
-		HRESULT hr = _graphics->GetDevice()->CreateBuffer(&desc, &data, _vertexBuffer.GetAddressOf());
-
-		CHECK(hr);
+		_vertexBuffer->Create(_vertices);
 	}
 
 	//Indices
@@ -141,19 +133,7 @@ void Game::CreateGeometry()
 
 	//Index Buffer
 	{
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
-		desc.Usage = D3D11_USAGE_IMMUTABLE;
-		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		desc.ByteWidth = (uint32)(sizeof(uint32) * _indices.size());
-
-		D3D11_SUBRESOURCE_DATA data;
-		ZeroMemory(&data, sizeof(data));
-		data.pSysMem = _indices.data(); //address of first element
-
-		HRESULT hr = _graphics->GetDevice()->CreateBuffer(&desc, &data, _indexBuffer.GetAddressOf());
-
-		CHECK(hr);
+		_indexBuffer->Create(_indices);
 	}
 
 }
@@ -274,12 +254,11 @@ void Game::CreateSRV()
 
 void Game::CreateInputLayout()
 {
-	D3D11_INPUT_ELEMENT_DESC layout[] =
+	vector<D3D11_INPUT_ELEMENT_DESC> layout
 	{
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0} //offset is 12
 	};
-	const int32 count = sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC);
 
-	_graphics->GetDevice()->CreateInputLayout(layout, count, _vsBlob->GetBufferPointer(), _vsBlob->GetBufferSize(), _inputLayout.GetAddressOf());
+	_inputLayout->Create(layout, _vsBlob);
 }
