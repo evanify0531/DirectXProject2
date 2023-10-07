@@ -10,14 +10,6 @@ public:
 	void Render();
 
 private:
-	void CreateRasterizerState();
-
-	void CreateSamplerState();
-
-	void CreateBlendState();
-
-
-private:
 	HWND _hwnd = NULL;
 	//uint32 _width = 0;
 	//uint32 _height = 0;
@@ -26,47 +18,35 @@ private:
 	//Graphics
 	shared_ptr<Graphics> _graphics;
 
-	shared_ptr<VertexBuffer> _vertexBuffer;
 	//Geometry
-	//vector<Vertex> _vertices;
-	//vector<uint32> _indices;
 	shared_ptr<Geometry<VertexTextureData>> _geometry;
-	//ComPtr<ID3D11Buffer> _vertexBuffer = nullptr;
-	//ComPtr<ID3D11Buffer> _indexBuffer = nullptr;
+	shared_ptr<VertexBuffer> _vertexBuffer;
 	shared_ptr<IndexBuffer> _indexBuffer;
-	//ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
 	shared_ptr<InputLayout> _inputLayout;
 
 	//Vertex Shader
 	shared_ptr<VertexShader> _vertexShader;
-	//ComPtr<ID3D11VertexShader> _vertexShader = nullptr;
-	//ComPtr<ID3DBlob> _vsBlob = nullptr;
 	
 	//Pixel Shader
 	shared_ptr<PixelShader> _pixelShader;
-	//ComPtr<ID3D11PixelShader> _pixelShader = nullptr;
-	//ComPtr<ID3DBlob> _psBlob = nullptr;
 
 	//SRV (Shader Resource View)
-	//ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;
-	//ComPtr<ID3D11ShaderResourceView> _shaderResourceView2 = nullptr;
 	shared_ptr<Texture> _texture1;
 
 	//Constant Buffer
 	TransformData _transformData;
 	shared_ptr <ConstantBuffer<TransformData>> _constantBuffer;
-	//ComPtr<ID3D11Buffer> _constantBuffer;
 	
 	Vec3 _localScale = { 1.f, 1.f, 1.f };
 	Vec3 _localPosition = { 0.f, 0.f, 0.f };
 	Vec3 _localRotation = { 0.f, 0.f, 0.f };
 
 	//RasterizerState
-	ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
+	shared_ptr<RasterizerState> _rasterizerState;
 
 	//SamplerState
-	ComPtr<ID3D11SamplerState> _samplerState = nullptr;
+	shared_ptr<SamplerState> _samplerState;
 
 	//BlendState
-	ComPtr<ID3D11BlendState> _blendState = nullptr;
+	shared_ptr<BlendState> _blendState;
 };
