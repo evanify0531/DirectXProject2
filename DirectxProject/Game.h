@@ -14,6 +14,8 @@ private:
 	//uint32 _width = 0;
 	//uint32 _height = 0;
 
+	shared_ptr<Pipeline> _pipeline;
+
 private:
 	//Graphics
 	shared_ptr<Graphics> _graphics;
