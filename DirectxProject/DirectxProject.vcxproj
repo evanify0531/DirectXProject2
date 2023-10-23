@@ -146,6 +146,7 @@
     <ClInclude Include="DirectxProject.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GeometryHelper.h" />
     <ClInclude Include="Graphics.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="DirectxProject.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GeometryHelper.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -198,6 +200,11 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Color.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Default.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
