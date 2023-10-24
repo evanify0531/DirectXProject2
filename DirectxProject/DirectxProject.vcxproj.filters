@@ -51,6 +51,9 @@
     <Filter Include="소스 파일\00. Engine\GameObject">
       <UniqueIdentifier>{3b596a65-5236-4925-a7e7-16a7de8260a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00. Engine\Component">
+      <UniqueIdentifier>{d67b1bab-f6c1-4488-b467-afdc4348dd34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectxProject.h">
@@ -128,6 +131,12 @@
     <ClInclude Include="GameObject.h">
       <Filter>소스 파일\00. Engine\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>소스 파일\00. Engine\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>소스 파일\00. Engine\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectxProject.rc">
@@ -199,6 +208,12 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>소스 파일\00. Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>소스 파일\00. Engine\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>소스 파일\00. Engine\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
