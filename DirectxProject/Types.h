@@ -20,4 +20,5 @@ using Vec4 = DirectX::SimpleMath::Vector4;
 //using Vec3 = DirectX::XMFLOAT3;
 //using Vec4 = DirectX::XMFLOAT4;
 using Matrix = DirectX::SimpleMath::Matrix;
+using Quaternion = DirectX::SimpleMath::Quaternion;
 using Color = DirectX::XMFLOAT4;

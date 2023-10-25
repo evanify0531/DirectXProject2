@@ -6,9 +6,10 @@ GameObject::GameObject(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 {
 	//Create Geometry
 	//Vertex Data
-	//_geometry = make_shared<Geometry<VertexTextureData>>();
-	_geometry = make_shared<Geometry<VertexColorData>>();
-	GeometryHelper::CreateRectangle(_geometry, Color(0.0f, 1.f, 0.f, 1.0f));
+	_geometry = make_shared<Geometry<VertexTextureData>>();
+	GeometryHelper::CreateRectangle(_geometry);
+	//_geometry = make_shared<Geometry<VertexColorData>>();
+	//GeometryHelper::CreateRectangle(_geometry, Color(0.0f, 1.f, 0.f, 1.0f));
 
 	//Vertex Buffer
 	_vertexBuffer = make_shared<VertexBuffer>(_device);
@@ -20,18 +21,18 @@ GameObject::GameObject(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 
 	//Vertex Shader
 	_vertexShader = make_shared<VertexShader>(_device);
-	//_vertexShader->Create(L"Default.hlsl", "VS", "vs_5_0");
-	_vertexShader->Create(L"Color.hlsl", "VS", "vs_5_0");
+	_vertexShader->Create(L"Default.hlsl", "VS", "vs_5_0");
+	//_vertexShader->Create(L"Color.hlsl", "VS", "vs_5_0");
 
 	//Input Layout
 	_inputLayout = make_shared<InputLayout>(_device);
-	//_inputLayout->Create(VertexTextureData::descs, _vertexShader->GetBlob());
-	_inputLayout->Create(VertexColorData::descs, _vertexShader->GetBlob());
+	_inputLayout->Create(VertexTextureData::descs, _vertexShader->GetBlob());
+	//_inputLayout->Create(VertexColorData::descs, _vertexShader->GetBlob());
 
 	//Pixel Shader
 	_pixelShader = make_shared<PixelShader>(_device);
-	//_pixelShader->Create(L"Default.hlsl", "PS", "ps_5_0");
-	_pixelShader->Create(L"Color.hlsl", "PS", "ps_5_0");
+	_pixelShader->Create(L"Default.hlsl", "PS", "ps_5_0");
+	//_pixelShader->Create(L"Color.hlsl", "PS", "ps_5_0");
 
 	//Rasterizer State
 	_rasterizerState = make_shared<RasterizerState>(_device);
@@ -53,6 +54,10 @@ GameObject::GameObject(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	//Sampler State
 	_samplerState = make_shared<SamplerState>(_device);
 	_samplerState->Create();
+
+	//TEST
+	_parent->AddChild(_transform);
+	_transform->SetParent(_parent);
 }
 
 GameObject::~GameObject()
@@ -61,20 +66,21 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
-	//Scale Rotation Translation SRT
-	_localPosition.x += 0.001f;
-	//_transformData.offset.x += -0.0003f;
-	//_transformData.offset.y += 0.0003f;
-	//SRT
-	Matrix matScale = Matrix::CreateScale(_localScale);
-	Matrix matRotation = Matrix::CreateRotationX(_localRotation.x);
-	matRotation += Matrix::CreateRotationY(_localRotation.y);
-	matRotation += Matrix::CreateRotationZ(_localRotation.z);
-	Matrix matTranslation = Matrix::CreateTranslation(_localPosition);
+	Vec3 pos = _parent->GetPosition();
+	pos.x += 0.001f;
 
-	Matrix matWorld = ((matScale * matRotation) * matTranslation);
+	_parent->SetPosition(pos);
 
-	_transformData.matWorld = matWorld;
+	Vec3 rot = _parent->GetRotation();
+	rot.z += 0.01f;
+	_parent->SetRotation(rot);
+	
+
+	//Vec3 pos = _transform->GetPosition();
+	//pos.x += 0.001f;
+	//_transform->SetPosition(pos);
+
+	_transformData.matWorld = _transform->GetWorldMatrix();
 
 	//write data into constant buffer
 	_constantBuffer->CopyData(_transformData);
