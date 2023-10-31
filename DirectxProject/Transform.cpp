@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Transform.h"
 
-Transform::Transform()
+Transform::Transform() : Super(ComponentType::Transform)
 {
 }
 
@@ -30,7 +30,8 @@ Vec3 ToEulerAngles(Quaternion q) {
 	return angles;
 }
 
-void Transform::Init()
+
+void Transform::Awake()
 {
 }
 
@@ -62,11 +63,6 @@ void Transform::UpdateTransform()
 	Quaternion quat;
 	_matWorld.Decompose(_scale, quat, _position);
 	_rotation = ToEulerAngles(quat);
-
-	_right = Vec3::TransformNormal(Vec3::Right, _matWorld);
-	_up = Vec3::TransformNormal(Vec3::Up, _matWorld);
-	//since right hand in simple math
-	_look = Vec3::TransformNormal(Vec3::Backward, _matWorld);
 
 	//children transform 영향
 	for (const shared_ptr<Transform>& child : _children)

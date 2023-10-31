@@ -30,8 +30,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    Game game;
-    game.Init(hWnd);
+    GGame->Init(hWnd);
 
     MSG msg = {};
 
@@ -45,8 +44,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
-            game.Update();
-            game.Render();
+            GGame->Update();
+            GGame->Render();
         }
     }
 

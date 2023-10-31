@@ -1,4 +1,7 @@
 #pragma once
+
+#define _XM_NO_INTRINSICS_
+
 #include "Values.h"
 #include "Struct.h"
 #include "Types.h"
@@ -6,6 +9,7 @@
 //STL
 #include <memory>
 #include <vector>
+#include <array>
 #include <string>
 #include <list>
 #include <map>
@@ -15,6 +19,7 @@ using namespace std;
 //winAPI
 #include <windows.h>
 #include <assert.h>
+
 
 //DX
 #include <d3d11.h>
@@ -37,6 +42,12 @@ using namespace Microsoft::WRL;
 
 #define CHECK(p)		(assert(SUCCEEDED(p)))
 
+#define		GAME	GGame
+#define		INPUT   GAME->GetInputManager()
+#define		TIME	GAME->GetTimeManager()
+#define		SCENE	GAME->GetSceneManager()
+#define		RESOURCES GAME->GetResourceManager()
+
 //Engine
 #include "Graphics.h"
 #include "VertexBuffer.h"
@@ -45,7 +56,7 @@ using namespace Microsoft::WRL;
 #include "Geometry.h"
 #include "VertexData.h"
 #include "GeometryHelper.h"
-#include "Shader.h"
+#include "ShaderBase.h"
 #include "ConstantBuffer.h"
 #include "Texture.h"
 #include "RasterizerState.h"
