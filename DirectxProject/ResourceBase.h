@@ -37,7 +37,7 @@ protected:
 protected:
 	ResourceType _type = ResourceType::None;
 	wstring _name;
-	wstring path;
+	wstring _path;
 	uint32 _id = 0;
 };
 
